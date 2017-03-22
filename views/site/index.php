@@ -2,52 +2,54 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+    <div ng-app="ngAppMain" ng-strict-di>
+        <div ng-controller="Ctrl" ng-init="save_link='<?= Url::to(['site/save']); ?>'">
+            <!--Заполняем данные для короткой ссылки-->
+            <div ng-hide="link_created">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon2">Полная&nbsp;ссылка:&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" ng-model="full_link" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Короткая&nbsp;ссылка:</span>
+                    <input type="text" ng-model="short_link" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon3">Время&nbsp;жизни&nbsp;до:&nbsp;</span>
+                    <input type="datetime-local" ng-model="date" class="form-control" placeholder="" aria-describedby="basic-addon3">
+                </div>
+                <button type="button" class="btn btn-default" ng-click="sendLink()">Создать ссылку</button>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <!--Вывод ошибки-->
+            <div ng-show="error">
+                <div class="alert alert-danger" role="alert" ng-show="error">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Ошибка:</span>
+                    {{ error }}
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <!--Вывод ссылки в случае успеха-->
+            <div ng-show="link_created">
+                <h4>Ссылка создана</h4>
+                <p>Ваша ссылка:
+                    <a href="<?= Url::base(true); ?>/link/{{ short_link }}">
+                    <?= Url::base(true); ?>/link/{{ short_link }}
+                    </a>
+                </p>
+                <p>Статистика:
+                    <a href="<?= Url::base(true); ?>/stat/{{ short_link }}">
+                        <?= Url::base(true); ?>/stat/{{ short_link }}
+                    </a>
+                </p>
             </div>
         </div>
-
     </div>
 </div>

@@ -6,8 +6,12 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+
     'components' => [
         'request' => [
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'wgYoOn6vJ2L-sFwA3E9xteaEcmx61P58',
         ],
@@ -38,14 +42,35 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        /*
         'urlManager' => [
+
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => true,
+
             'rules' => [
-            ],
+                [
+                    'pattern' => 'link/<search:\w+>',
+                    'route' => 'link/to',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => 'stat/<search:\w+>',
+                    'route' => 'link/stat',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => 'site/save',
+                    'route' => 'site/save',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => '',
+                    'route' => 'site/index',
+                    'suffix' => ''
+                ],
+            ]
         ],
-        */
     ],
     'params' => $params,
 ];
