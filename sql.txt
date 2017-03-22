@@ -1,0 +1,19 @@
+1. Для выборки двух максимальных цен можно использовать такой запрос:
+select item1.`category_id`, item1.`name`, item1.`price` FROM `items` AS item1
+LEFT JOIN `items` AS item2
+ON item1.category_id = item2.category_id
+AND item1.price < item2.price
+LEFT JOIN `items` AS item3
+ON item1.category_id = item3.category_id
+AND item1.price < item3.price
+AND item2.price != item3.price
+WHERE item3.`category_id` IS NULL;
+
+2. Получить все года рождения пользователей с указанием сколько мужчин и женщин родилось в этот год:
+SELECT YEAR(`birthday`) as year, gender, COUNT(*) as count FROM `users` GROUP BY YEAR(`birthday`), gender
+
+
+Посчитать только не заблокированных
+SELECT YEAR(`birthday`) as year, gender, COUNT(*) as count FROM `users`
+WHERE users.id NOT IN (SELECT user_id FROM banned_users WHERE banned = 1)
+GROUP BY YEAR(`birthday`), gender
